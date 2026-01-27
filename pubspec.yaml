@@ -1,0 +1,60 @@
+name: weatherly
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_svg: ^2.0.17
+  dio: ^5.4.0
+  google_fonts: ^6.3.2
+  geolocator: ^11.0.0
+  shared_preferences: ^2.2.2
+  intl: ^0.18.0
+  cached_network_image: ^3.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+ 
+  flutter_gen_runner: ^5.4.0
+  build_runner: 
+  permission_handler: ^11.1.0
+
+
+
+flutter_gen:
+  output: lib/generated/
+  integrations:
+    flutter_svg: true
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/svgs/
+    - assets/svgs/cloud_moon_rain.svg
+    - assets/svgs/cloud_sun_rain.svg
+    - assets/svgs/house.svg
+    - assets/images/
+    - assets/images/img_dark_background.jpg
+    - assets/images/img_light_background.png
+
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans.ttf
+
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins_Black.ttf
+
+    
+

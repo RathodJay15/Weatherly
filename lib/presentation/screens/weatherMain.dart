@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:weatherly/core/storage/locationStorage.dart';
 import 'seven_day_forecast.dart';
 import 'today_forecast.dart';
+import 'package:weatherly/data/controller/weather_api_controller.dart';
 
 class WeatherMain extends StatefulWidget {
   @override
@@ -8,6 +10,8 @@ class WeatherMain extends StatefulWidget {
 }
 
 class _WeatherMainState extends State<WeatherMain> {
+  final WeatherApiController _weatherController = WeatherApiController();
+
   int _currentIndex = 0;
 
   void _screenChange(value) {
@@ -17,11 +21,77 @@ class _WeatherMainState extends State<WeatherMain> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final location = await LocationStorage.getLocation();
+
+    if (location != null) {
+      final error = await _weatherController.loadData(
+        lat: location['lat']!,
+        long: location['lon']!,
+      );
+      if (error != null) {
+        print('----Debuge:$error');
+      }
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_weatherController.weatherData == null) {
+      return Scaffold(
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Theme.of(context).colorScheme.onPrimary,
+                Theme.of(context).colorScheme.onSecondary,
+                Theme.of(context).colorScheme.onSurface,
+              ],
+            ),
+          ),
+          child: Center(
+            child: SizedBox(
+              height: 50.0,
+              width: 50.0,
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                strokeWidth: 5.0,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    final current = _weatherController.weatherData!.current;
+    final hourlyList = _weatherController.weatherData!.hourly;
+    final weeklyList = _weatherController.weatherData!.daily;
+    final sunInfo = _weatherController.weatherData!.sunInfo;
+    final airQuality = _weatherController.weatherData!.airQuality;
+    final locationModel = _weatherController.weatherData!.currentLocation;
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: [TodayForecast(), SevenDayForecast()],
+        children: [
+          TodayForecast(current: current, hourlyList: hourlyList),
+          SevenDayForecast(
+            currentLocation: locationModel,
+            airQuality: airQuality,
+            current: current,
+            sunInfo: sunInfo,
+            weeklyList: weeklyList,
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

@@ -1,43 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:weatherly/core/storage/locationStorage.dart';
-import 'package:weatherly/data/controller/weather_api_controller.dart';
+import 'package:weatherly/data/models/airQuality.dart';
+import 'package:weatherly/data/models/currentWeather.dart';
+import 'package:weatherly/data/models/locationModel.dart';
+import 'package:weatherly/data/models/sunInfo.dart';
+import 'package:weatherly/data/models/weeklyWeather.dart';
 import 'package:weatherly/generated/fonts.gen.dart';
-import 'package:weatherly/presentation/screens/today_forecast.dart';
 import '/generated/assets.gen.dart';
 import '/core/constants/app_constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class SevenDayForecast extends StatefulWidget {
+  final CurrentWeather current;
+  final List<WeeaklyWeather> weeklyList;
+  final SunInfo sunInfo;
+  final AirQuality airQuality;
+  final LocationModel currentLocation;
+
+  SevenDayForecast({
+    required this.airQuality,
+    required this.weeklyList,
+    required this.current,
+    required this.sunInfo,
+    required this.currentLocation,
+  });
+
   @override
   State<StatefulWidget> createState() => _SevenDayForecast();
 }
 
 class _SevenDayForecast extends State<SevenDayForecast> {
-  final WeatherApiController _weatherController = WeatherApiController();
-
   @override
   void initState() {
     super.initState();
-    _load();
   }
 
-  Future<void> _load() async {
-    final location = await LocationStorage.getLocation();
-
-    if (location != null) {
-      final error = await _weatherController.loadData(
-        lat: location['lat']!,
-        long: location['lon']!,
-      );
-      if (error != null) {
-        print('----Debuge:$error');
-      }
-      setState(() {});
-    }
-  }
-
-  int _currentIndex = 2;
   final ScrollController _scrollController = ScrollController();
 
   void _scrollLeft() {
@@ -56,53 +53,13 @@ class _SevenDayForecast extends State<SevenDayForecast> {
     );
   }
 
-  void _screenChange(value) {
-    setState(() {
-      _currentIndex = value;
-    });
-    if (value == 0) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => TodayForecast()),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_weatherController.weatherData == null) {
-      return Scaffold(
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Theme.of(context).colorScheme.onPrimary,
-                Theme.of(context).colorScheme.onSecondary,
-                Theme.of(context).colorScheme.onSurface,
-              ],
-            ),
-          ),
-          child: Center(
-            child: SizedBox(
-              height: 50.0,
-              width: 50.0,
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.onInverseSurface,
-                strokeWidth: 5.0,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    final current = _weatherController.weatherData!.current;
-    final weeklyList = _weatherController.weatherData!.daily;
-    final sunInfo = _weatherController.weatherData!.sunInfo;
-    final airQuality = _weatherController.weatherData!.airQuality;
+    final current = widget.current;
+    final weeklyList = widget.weeklyList;
+    final sunInfo = widget.sunInfo;
+    final airQuality = widget.airQuality;
+    final currentLocation = widget.currentLocation;
 
     return Scaffold(
       body: Container(
@@ -127,7 +84,7 @@ class _SevenDayForecast extends State<SevenDayForecast> {
 
             Center(
               child: Text(
-                _weatherController.weatherData!.city,
+                '${currentLocation.city}, ${currentLocation.region}',
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
             ),
@@ -493,28 +450,6 @@ class _SevenDayForecast extends State<SevenDayForecast> {
             ),
           ],
         ),
-      ),
-
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        iconSize: 30,
-        onTap: (value) => _screenChange(value),
-        selectedItemColor: Colors.amber,
-        unselectedItemColor: Theme.of(context).colorScheme.onInverseSurface,
-        backgroundColor: Theme.of(context).colorScheme.onSurface,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on_outlined),
-            label: 'Location',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
-            label: 'Add',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
-        ],
       ),
     );
   }

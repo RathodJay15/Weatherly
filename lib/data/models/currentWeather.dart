@@ -1,12 +1,12 @@
 class CurrentWeather {
-  final String tempC;
-  final String minTemp;
-  final String maxTemp;
-  final String condition;
-  final String uv;
-  final int humidity;
-  final DateTime dateTime;
-  final String imgIcon;
+  final String? tempC;
+  final String? minTemp;
+  final String? maxTemp;
+  final String? condition;
+  final String? uv;
+  final int? humidity;
+  final DateTime? dateTime;
+  final String? imgIcon;
 
   CurrentWeather({
     required this.tempC,

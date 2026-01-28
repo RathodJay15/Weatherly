@@ -1,11 +1,11 @@
 import 'package:intl/intl.dart';
 
 class HourlyWeather {
-  final DateTime time;
-  final String tempC;
-  final String condition;
-  late final String formattedTime;
-  final String imgIcon;
+  final DateTime? time;
+  final String? tempC;
+  final String? condition;
+  late final String? formattedTime;
+  final String? imgIcon;
 
   HourlyWeather({
     required this.time,
@@ -13,7 +13,7 @@ class HourlyWeather {
     required this.condition,
     required this.imgIcon,
   }) {
-    formattedTime = DateFormat('h a').format(time);
+    formattedTime = DateFormat('h a').format(time!);
   }
 
   factory HourlyWeather.fromJson(Map<String, dynamic> json) {

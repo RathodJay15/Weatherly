@@ -1,7 +1,7 @@
 class AirQuality {
-  final String pm25;
-  final String pm10;
-  final int aqi;
+  final String? pm25;
+  final String? pm10;
+  final int? aqi;
 
   AirQuality({required this.pm25, required this.pm10, required this.aqi});
 

@@ -53,186 +53,190 @@ class _TodayForecastState extends State<TodayForecast> {
             ],
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 40),
-            // SvgPicture.asset(
-            //   Assets.svgs.cloudSunRain.path,
-            //   height: 280,
-            //   width: 280,
-            //   semanticsLabel: 'Rain cloud',
-            // ),
-            CachedNetworkImage(
-              imageUrl: current.imgIcon,
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => SvgPicture.asset(
-                Assets.svgs.cloudSunRain.path,
-                semanticsLabel: 'Rain cloud',
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 40),
+              // SvgPicture.asset(
+              //   Assets.svgs.cloudSunRain.path,
+              //   height: 280,
+              //   width: 280,
+              //   semanticsLabel: 'Rain cloud',
+              // ),
+              CachedNetworkImage(
+                imageUrl: current.imgIcon!,
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => SvgPicture.asset(
+                  Assets.svgs.cloudSunRain.path,
+                  semanticsLabel: 'Rain cloud',
+                ),
+                height: 200,
+                width: 200,
+                fit: BoxFit.fill,
               ),
-              height: 200,
-              width: 200,
-              fit: BoxFit.fill,
-            ),
-            Text(
-              '${current.tempC.toString()}°',
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-            Text(
-              AppConstants.precipitations,
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            Text(
-              'Max: ${current.maxTemp}°  Min: ${current.minTemp}°',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.45,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    top: 10,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: SvgPicture.asset(
-                        Assets.svgs.house.path,
-                        height: 300,
-                        width: 300,
-                        semanticsLabel: 'Rain cloud',
+              Text(
+                '${current.tempC.toString()}°',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              Text(
+                AppConstants.precipitations,
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              Text(
+                'Max: ${current.maxTemp}°  Min: ${current.minTemp}°',
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                height: 450,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      top: 10,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: SvgPicture.asset(
+                          Assets.svgs.house.path,
+                          height: 300,
+                          width: 300,
+                          semanticsLabel: 'Rain cloud',
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 3,
-                    child: Container(
-                      height: 250,
-                      width: 450,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Theme.of(context).colorScheme.onSecondary,
-                            Theme.of(context).colorScheme.onSurface,
+                    Positioned(
+                      bottom: 3,
+                      child: Container(
+                        height: 250,
+                        width: 450,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              Theme.of(context).colorScheme.onSecondary,
+                              Theme.of(context).colorScheme.onSurface,
+                            ],
+                            stops: [0.0001, 1.0],
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.40),
+                              // offset: Offset(0, 4),
+                              blurRadius: 5,
+                            ),
                           ],
-                          stops: [0.0001, 1.0],
                         ),
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.40),
-                            // offset: Offset(0, 4),
-                            blurRadius: 5,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 20,
-                              bottom: 10,
-                              left: 40,
-                              right: 40,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  AppConstants.today,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium
-                                      ?.copyWith(
-                                        fontFamily: FontFamily.openSans,
-                                      ),
-                                ),
-                                Text(
-                                  DateFormat(
-                                    'MMM d',
-                                  ).format(current.dateTime).toString(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 20,
+                                bottom: 10,
+                                left: 40,
+                                right: 40,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    AppConstants.today,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(
+                                          fontFamily: FontFamily.openSans,
+                                        ),
+                                  ),
+                                  Text(
+                                    DateFormat(
+                                      'MMM d',
+                                    ).format(current.dateTime!).toString(),
 
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium
-                                      ?.copyWith(
-                                        fontFamily: FontFamily.openSans,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            height: 10,
-                            thickness: 2,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 40,
-                              vertical: 20,
-                            ),
-                            child: SizedBox(
-                              height: 135,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemExtent: 80 + 16,
-                                itemCount: hourlyList.length,
-                                itemBuilder: (context, index) {
-                                  final hour = hourlyList[index];
-                                  return Container(
-                                    width: 80,
-                                    margin: const EdgeInsets.only(right: 16),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '${hour.tempC}°C',
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.headlineMedium,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(
+                                          fontFamily: FontFamily.openSans,
                                         ),
-                                        // cloudPicture,
-                                        CachedNetworkImage(
-                                          imageUrl: hour.imgIcon,
-                                          placeholder: (context, url) =>
-                                              CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              cloudPicture,
-                                          height: 60,
-                                          width: 60,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        Text(
-                                          hour.formattedTime,
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.headlineMedium,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                        ],
+                            Divider(
+                              height: 10,
+                              thickness: 2,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40,
+                                vertical: 20,
+                              ),
+                              child: SizedBox(
+                                height: 135,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemExtent: 80 + 16,
+                                  itemCount: hourlyList.length,
+                                  itemBuilder: (context, index) {
+                                    final hour = hourlyList[index];
+                                    return Container(
+                                      width: 80,
+                                      margin: const EdgeInsets.only(right: 16),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '${hour.tempC}°C',
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.headlineMedium,
+                                          ),
+                                          // cloudPicture,
+                                          CachedNetworkImage(
+                                            imageUrl: hour.imgIcon!,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    cloudPicture,
+                                            height: 60,
+                                            width: 60,
+                                            fit: BoxFit.fill,
+                                          ),
+                                          Text(
+                                            hour.formattedTime!,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.headlineMedium,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

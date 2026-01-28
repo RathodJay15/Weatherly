@@ -1,10 +1,10 @@
 class WeeaklyWeather {
-  final DateTime date;
-  final String minTemp;
-  final String maxTemp;
-  final String avgTemp;
-  final String condition;
-  final String imgIcon;
+  final DateTime? date;
+  final String? minTemp;
+  final String? maxTemp;
+  final String? avgTemp;
+  final String? condition;
+  final String? imgIcon;
 
   WeeaklyWeather({
     required this.date,
@@ -35,11 +35,11 @@ class WeeaklyWeather {
       'Saturday',
       'Sunday',
     ];
-    return days[date.weekday - 1];
+    return days[date!.weekday - 1];
   }
 
   String get shortDayName {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return days[date.weekday - 1];
+    return days[date!.weekday - 1];
   }
 }

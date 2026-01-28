@@ -26,4 +26,23 @@ class WeatherApiController {
       return 'Failed to load weather data';
     }
   }
+
+  Future<WeatherResponse?> loadSearchedData({required String city}) async {
+    try {
+      final response = await _service.searchByLocation(city);
+
+      weatherData = WeatherResponse.fromJson(response.data);
+      return weatherData;
+    } on DioException catch (e) {
+      debugPrint('DIO ERROR TYPE: ${e.type}');
+      debugPrint('DIO ERROR MESSAGE: ${e.message}');
+      debugPrint('DIO ERROR RESPONSE: ${e.response?.data}');
+      debugPrint('DIO STATUS CODE: ${e.response?.statusCode}');
+
+      if (e.type == DioExceptionType.receiveTimeout) {
+        debugPrint('Request timed out. Retry?');
+      }
+      return null;
+    }
+  }
 }

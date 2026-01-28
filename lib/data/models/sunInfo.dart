@@ -1,6 +1,6 @@
 class SunInfo {
-  final String sunrise;
-  final String sunset;
+  final String? sunrise;
+  final String? sunset;
 
   SunInfo({required this.sunrise, required this.sunset});
 

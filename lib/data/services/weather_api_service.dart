@@ -17,4 +17,17 @@ class WeatherApiService {
       },
     );
   }
+
+  Future<Response> searchByLocation(String city) {
+    return _dio.get(
+      ApiConstants.url,
+      queryParameters: {
+        'key': ApiConstants.apiKey,
+        'q': city,
+        'days': 7,
+        'aqi': 'yes',
+        'alerts': 'no',
+      },
+    );
+  }
 }

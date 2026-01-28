@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weatherly/core/storage/locationStorage.dart';
+import 'package:weatherly/presentation/screens/searchLocation.dart';
 import 'seven_day_forecast.dart';
 import 'today_forecast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weatherly/data/controller/weather_api_controller.dart';
 
 class WeatherMain extends StatefulWidget {
@@ -27,18 +29,21 @@ class _WeatherMainState extends State<WeatherMain> {
   }
 
   Future<void> _load() async {
-    final location = await LocationStorage.getLocation();
-
-    if (location != null) {
+    await Geolocator.getCurrentPosition().then((value) async {
+      await LocationStorage.saveLocation(
+        latitude: value.latitude,
+        longitude: value.longitude,
+      );
       final error = await _weatherController.loadData(
-        lat: location['lat']!,
-        long: location['lon']!,
+        lat: value.latitude,
+        long: value.longitude,
       );
       if (error != null) {
-        print('----Debuge:$error');
+        debugPrint('----Debuge:$error');
       }
-      setState(() {});
-    }
+    });
+
+    if (mounted) setState(() {});
   }
 
   @override
@@ -91,6 +96,14 @@ class _WeatherMainState extends State<WeatherMain> {
             sunInfo: sunInfo,
             weeklyList: weeklyList,
           ),
+          SearchLocation(
+            currentLocation: locationModel,
+            airQuality: airQuality,
+            current: current,
+            sunInfo: sunInfo,
+            weeklyList: weeklyList,
+            hourlyList: hourlyList,
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -112,7 +125,7 @@ class _WeatherMainState extends State<WeatherMain> {
             icon: Icon(Icons.add_circle_outline),
             label: 'Add',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'search'),
         ],
       ),
     );

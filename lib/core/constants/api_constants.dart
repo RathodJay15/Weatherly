@@ -7,5 +7,5 @@ class ApiConstants {
 
   static const String url = "https://api.weatherapi.com/v1/forecast.json";
 
-  static const String apiKey = "c4b90520b2604bf199694004262601";
+  static const String apiKey = "YOUR_API_KEY";
 }
